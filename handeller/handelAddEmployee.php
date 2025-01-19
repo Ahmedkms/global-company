@@ -43,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         } else {
             $errors['image'] = "Invalid file type. Allowed: png, jpg, jpeg, gif.";
         }
-    // } else {
-    //     $errors['image'] = "Please upload a valid image.";
-    // }
+    } else {
+        $errors['image'] = "Please upload a valid image.";
+    }
 
     //validate date of birth
     if (required($dateOfBirth)) {
@@ -59,16 +59,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     // validate phone
-    // if (required($phone)) {
-    //     $errors['phone'] = "phone is required.";
-    // } elseif (!preg_match('/^01[0125][0-9]{8}$/', $phone)) {
-    //     $errors['phone'] = "Invalid phone number. Must be 11 digits and start with 010, 011, 012, or 015.";
-    // }
+    if (required($phone)) {
+        $errors['phone'] = "phone is required.";
+    } elseif (!preg_match('/^01[0125][0-9]{8}$/', $phone)) {
+        $errors['phone'] = "Invalid phone number. Must be 11 digits and start with 010, 011, 012, or 015.";
+    }
 
-    // //validate address 
-    // if (required($address)) {
-    //     $errors['address'] = "address is required.";
-    // }
+    //validate address 
+    if (required($address)) {
+        $errors['address'] = "address is required.";
+    }
 
     // validate Criminal_record file 
     $Criminal_record = $_FILES['Criminal_record'];
