@@ -80,13 +80,14 @@ unset($_SESSION['errors']);
     </thead>
     <tbody>
       <?php
-      // Query to retrieve employee data
+      // Query to retrieve masrofat data
       $sql = "SELECT id, bandname, amount,date, comment FROM masrofat";
       $result = $conn->query($sql);
-
+      $summisionOfMasrofat = 0;
       if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
           $id = $row["id"];
+          $summisionOfMasrofat += $row['amount'];
           echo "<tr>";
           echo "<td>" . $row['id'] . "</td>";
           echo "<td>" . $row['bandname'] . "</td>";
@@ -103,7 +104,17 @@ unset($_SESSION['errors']);
       } else {
         echo "<tr><td colspan='5'>لا توجد بيانات</td></tr>";
       }
+
       ?>
+      <td></td>
+      <td></td>
+      <td colspan="2" class="text-right">
+        <strong> مجموع مصروفات الشهر </strong>
+      </td>
+      <td >
+        <h3><?= $summisionOfMasrofat; ?></h3>
+      </td>
+      <td></td>
     </tbody>
   </table>
   <!--End of Masrofat table-->

@@ -48,8 +48,10 @@ if (isset($_GET["id"])) {
                         echo "<td>" . htmlspecialchars($employee['job']) . "</td>";
                         echo "<td>" . htmlspecialchars($employee['site']) . "</td>";
                         echo "<td>
-                                <a href='../updateEmployee.php?id=" . $employee['id'] . "' class='btn btn-warning'>تعديل</a>
-                                <a href='../employee/deleteEmployee.php?id=" . $employee['id'] . "' class='btn btn-danger'>حذف</a>
+                                <a href='updateEmployee.php?id=" . $employee['id'] . "' class='btn btn-warning'>تعديل</a>
+                                <a href='employee/deleteEmployee.php?id=" . $employee['id'] . "' class='btn btn-danger'>حذف</a>
+                                <a href='#?id=" . $employee['id'] . "' class='btn btn-success'>عرض</a>
+
                             </td>";
                         echo "</tr>";
                     }

@@ -62,6 +62,8 @@ include "data/connection.php";
               echo "<td>
                       <a href='updateEmployee.php?id=$empID' class='btn btn-warning'>تعديل</a>
                       <a href='employee/deleteEmployee.php?id=$empID' class='btn btn-danger'>حذف</a>
+                      <a href='entitlements.php?id=$empID' class='btn btn-success'>عرض</a>
+
                     </td>";
               echo "</tr>";
             }

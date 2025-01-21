@@ -70,10 +70,6 @@ if(!empty($errors)){
           $date,
           $comment
         );
-        
-        
-
-    
 
         // Execute the statement
         if ($stmt->execute()) {

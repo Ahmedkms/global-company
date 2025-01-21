@@ -18,11 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Validate name
     if (required($name)) {
         $errors['name'] = "Name is required.";
-    } elseif (minimumchars($name, 3)) {
-        $errors['name'] = "Name must be more than 3 characters.";
-    } elseif (maximumchars($name, 70)) {
-        $errors['name'] = "Name cannot exceed 50 characters.";
-    }
+    } 
 
     // Validate image file
     if ($file && $file['error'] === UPLOAD_ERR_OK) {
@@ -37,19 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $new_name = uniqid('', true) . "." . $ext;
                 $destination = "../images/" . $new_name;
                 move_uploaded_file($f_tmp_name, $destination);
-            } else {
-                $errors['image'] = "File size exceeds 500KB.";
-            }
+            } 
         } else {
             $errors['image'] = "Invalid file type. Allowed: png, jpg, jpeg, gif.";
         }
-    } else {
-        $errors['image'] = "Please upload a valid image.";
-    }
+    } 
 
     //validate date of birth
     if (required($dateOfBirth)) {
-        $errors['dateOfBirth'] = "date of birth is required.";
+        // $errors['dateOfBirth'] = "date of birth is required.";
     } else {
         $dobTimestamp = strtotime($dateOfBirth);
         $currentTimestamp = time();
@@ -60,15 +52,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     // validate phone
     if (required($phone)) {
-        $errors['phone'] = "phone is required.";
+        // $errors['phone'] = "phone is required.";
     } elseif (!preg_match('/^01[0125][0-9]{8}$/', $phone)) {
         $errors['phone'] = "Invalid phone number. Must be 11 digits and start with 010, 011, 012, or 015.";
     }
 
     //validate address 
-    if (required($address)) {
-        $errors['address'] = "address is required.";
-    }
+    // if (required($address)) {
+    //     $errors['address'] = "address is required.";
+    // }
 
     // validate Criminal_record file 
     $Criminal_record = $_FILES['Criminal_record'];
@@ -85,14 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $Criminal_record_destination = "../Criminal_record/" . $Criminal_record_new_name;
                 move_uploaded_file($Criminal_record_f_tmp_name, $Criminal_record_destination);
             } else {
-                $errors['Criminal_record'] = "File size exceeds 500KB.";
+                // $errors['Criminal_record'] = "File size exceeds 500KB.";
             }
         } else {
             $errors['Criminal_record'] = "Invalid file type. Allowed: png, jpg, jpeg, gif.";
         }
-    } else {
-        $errors['Criminal_record'] = "Please upload a valid image.";
-    }
+    } 
 
     // validate  jop
     if (required($job)) {

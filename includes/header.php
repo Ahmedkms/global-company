@@ -19,6 +19,18 @@
       color: red;
       font-size: 12px;
     }
+    .navbar .nav-link,
+    .navbar-brand {
+      color: #f8f9fa;
+      /* Light color for better contrast */
+    }
+
+    /* Change the color on hover */
+    .navbar .nav-link:hover,
+    .navbar-brand:hover {
+      color: #ffc107;
+      /* Gold color on hover */
+    }
   </style>
   </style>
 </head>
