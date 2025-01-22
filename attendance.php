@@ -1,4 +1,8 @@
 <?php
+$title = "الحضور";
+include "includes/header.php";
+include "includes/nav.php";
+include "data/connection.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -23,12 +27,20 @@ if (isset($_SESSION['success'])) {
       } 
       unset($_SESSION['success']);
   }
-  // Clear errors after displaying them
 
-$title = "الحضور";
-include "includes/header.php";
-include "includes/nav.php";
-include "data/connection.php";
+  //check if attendance information not absence for allemployee
+  if (isset($_SESSION['isPresent'])) {
+  
+    // Ensure $error is a string before using addslashes
+    if (is_string($_SESSION['isPresent'])) {
+        echo "<script>
+            alert('" . addslashes($_SESSION['isPresent']) . "');
+        </script>";
+    } 
+    unset($_SESSION['isPresent']);
+}
+
+
 
 $sql = "SELECT id, name FROM employees";
 $result = $conn->query($sql);
@@ -42,7 +54,7 @@ $result = $conn->query($sql);
             <a class="nav-link " href="salary.php">المرتبات</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="attendence.php">الحضور اليومي</a>
+            <a class="nav-link active" href="attendance.php">الحضور اليومي</a>
         </li>
     </ul>
 

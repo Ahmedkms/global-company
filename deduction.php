@@ -2,7 +2,7 @@
 $title = "المستحقات";
 include "includes/header.php";
 include "includes/nav.php";
-include "data/connection.php"; 
+include "data/connection.php";
 
 if (isset($_GET['id'])) {
   $employeeId = $_GET['id'];
@@ -16,29 +16,30 @@ if (isset($_GET['id'])) {
 
   // التحقق من العثور على الموظف
   if ($result->num_rows > 0) {
-      $employee = $result->fetch_assoc();
-      $employeeName = $employee['name'];
+    $employee = $result->fetch_assoc();
+    $employeeName = $employee['name'];
   } else {
-      $employeeName = "غير معروف";
+    $employeeName = "غير معروف";
   }
-} 
+}
 ?>
 
 <body>
- 
+
 
   <div class="container-fluid">
     <div class="float-end text-right mt-2 mb-2">
       <div class="badge bg-info text-light">
         <h4>
           <span> كود الموظف:</span>
-          <?=$employeeId?>
+          <?= $employeeId ?>
         </h4>
       </div>
       <div class="badge bg-info text-light">
         <h4>
           <span> اسم الموظف:</span>
-        <?=$employeeName?>        </h4>
+          <?= $employeeName ?>
+        </h4>
       </div>
       <!--search and add button-->
       <div class="row mt-3 d-flex container">
@@ -57,33 +58,42 @@ if (isset($_GET['id'])) {
             <h5 class="modal-title" id="exampleModalLabel">الاستقطاعات</h5>
           </div>
           <div class="modal-body">
-            <form class="text-right">
+            <form action="handeller/handelDeduction.php" method="POST" class="text-right">
+              <input type="hidden" name="employee_id" value="<?= $employeeId ?>">
+
               <div class="form-group">
-                <label for="recipient-name" class="col-form-label"> سلف :</label>
-                <input type="text" class="form-control" id="recipient-name">
+                <label for="bandname" class="col-form-label">الاستقطاعات:</label>
+                <select name="bandname" id="bandname" class="form-control">
+                  <option value="loan">سلف</option>
+                  <option value="insurance">تأمينات</option>
+                  <option value="vacation">اجازات بالخصم</option>
+                  <option value="penalties">جزاءات</option>
+                  <option value="absence">غياب</option>
+                </select>
               </div>
               <div class="form-group">
-                <label for="recipient-name" class="col-form-label">  تأمينات:</label>
-                <input type="text" class="form-control" id="recipient-name">
+                <label for="notes" class="col-form-label"></label>قيمة الاستقطاع</label>
+                <input type="number" name="amount" id="amount" class="form-control"></input>
               </div>
+
               <div class="form-group">
-                <label for="recipient-name" class="col-form-label">  اجازات بالخصم:</label>
-                <input type="text" class="form-control" id="recipient-name">
+                <label for="date" class="col-form-label">تاريخ الاستقطاع:</label>
+                <input type="date" class="form-control" name="date" value="<?= date('Y-m-d') ?>">
               </div>
+
               <div class="form-group">
-                <label for="recipient-name" class="col-form-label"> جزاءات:</label>
-                <input type="text" class="form-control" id="recipient-name">
+                <label for="notes" class="col-form-label">ملاحظات:</label>
+                <textarea name="notes" id="notes" class="form-control" rows="3"></textarea>
               </div>
-              <div class="form-group">
-                <label for="recipient-name" class="col-form-label"> غياب:</label>
-                <input type="text" class="form-control" id="recipient-name">
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+                <button type="submit" class="btn btn-primary mr-2">اضافة</button>
               </div>
             </form>
+
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-            <button type="button" class="btn btn-primary mr-2">اضافة </button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -91,10 +101,10 @@ if (isset($_GET['id'])) {
     <!-- start of tap section-->
     <ul class="nav nav-tabs">
       <li class="nav-item">
-        <a class="nav-link" href="entitlements.php?id=<?=$employeeId?>">الاستحقاقات</a>
+        <a class="nav-link" href="entitlements.php?id=<?= $employeeId ?>">الاستحقاقات</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link active" href="deduction.php?id=<?=$employeeId?>">الاستقطاعات</a>
+        <a class="nav-link active" href="deduction.php?id=<?= $employeeId ?>">الاستقطاعات</a>
       </li>
     </ul>
     <!--End of tap section-->
@@ -125,14 +135,14 @@ if (isset($_GET['id'])) {
             <td> 12</td>
             <td>12678</td>
           </tr>
-        
+
         </tbody>
       </table>
     </div>
     <!--End of mosthkat table-->
   </div>
   <script>
-    $('#exampleModal').on('show.bs.modal', function (event) {
+    $('#exampleModal').on('show.bs.modal', function(event) {
       var button = $(event.relatedTarget) // Button that triggered the modal
       var recipient = button.data('whatever') // Extract info from data-* attributes
       // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).

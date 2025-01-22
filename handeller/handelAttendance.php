@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // التحقق من أن التاريخ غير فارغ
     if (empty($attendanceDate)) {
-        $errors[]['date'] =  "التاريخ غير موجود";
+        $errors[]['date'] = "التاريخ غير موجود";
     }
 
     // استخراج الشهر والسنة من التاريخ
@@ -33,15 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = "تم تسجيل الحضور لهذا التاريخ مسبقًا.";
     }
 
-    // إذا لم يكن هناك أي أخطاء
-    if (!empty($errors)){
+    // إذا كانت هناك أخطاء
+    if (!empty($errors)) {
         $_SESSION["errors"] = $errors;
-        var_dump($_SESSION['errors']);
-        
         header("location: ../attendance.php");
         exit;
-    }
-    else {
+    } else {
         // جلب جميع الموظفين
         $sql = "SELECT id FROM employees";
         $result = $conn->query($sql);
@@ -50,6 +47,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result->num_rows > 0) {
             // التعامل مع الحضور لكل موظف
             $attendanceData = $_POST['attendance'];
+
+            // تحقق من وجود على الأقل موظف واحد حالته Present
+            $hasPresent = false;
+            foreach ($attendanceData as $status) {
+                if ($status === 'Present') {
+                    $hasPresent = true;
+                    break;
+                }
+            }
+
+            // إذا لم يكن هناك أي موظف حاضر، إرجاع خطأ
+            if (!$hasPresent) {
+                $_SESSION["isPresent"] = "يجب أن يكون هناك موظف واحد على الأقل حاضر.";
+                header("location: ../attendance.php");
+                exit;
+            }
 
             // بدء المعاملات (لتنفيذها بشكل متسلسل)
             $conn->begin_transaction();
@@ -85,21 +98,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 // التحقق من أن كل شيء تم بنجاح
                 $conn->commit();
-                $_SESSION["success"] = "تم اضافةالحضور بنجاح";
-               header("location: ../attendance.php");
-               exit;
-               
-            // var_dump($attendanceDate);
+                $_SESSION["success"] = "تم إضافة الحضور بنجاح";
+                header("location: ../attendance.php");
+                exit;
             } catch (Exception $e) {
                 // في حالة حدوث خطأ، التراجع عن المعاملات
                 $conn->rollback();
                 echo "حدث خطأ: " . $e->getMessage();
-
             }
         } else {
             echo "لا توجد بيانات للموظفين.";
         }
-    
     }
 }
 ?>

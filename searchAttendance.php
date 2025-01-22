@@ -63,7 +63,11 @@ if (isset($_GET['search_date'])) {
             }
             ?>
         </tbody>
+        
     </table>
+
+    <!-- <button class="btn btn-primary" type="submit">تعديل الكل</button> -->
+
 </div>
 
 <script src="js/popper.min.js"></script>

@@ -59,19 +59,16 @@ if (isset($_GET['id'])) {
             <h5 class="modal-title" id="exampleModalLabel">الاستحقاقات</h5>
           </div>
           <div class="modal-body">
-            <form class="text-right">
-              <div class="form-group">
+            <form action="handeller/handelEntitlement.php" class="text-right">
+              <!-- <div class="form-group">
                 <label for="recipient-name" class="col-form-label">عدد أيام الحضور:</label>
                 <input type="text" class="form-control" id="recipient-name">
-              </div>
+              </div> -->
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label"> ساعات اضافية:</label>
                 <input type="text" class="form-control" id="recipient-name">
               </div>
-              <div class="form-group">
-                <label for="recipient-name" class="col-form-label"> اخر اضافي:</label>
-                <input type="text" class="form-control" id="recipient-name">
-              </div>
+             
               <div class="form-group">
                 <label for="recipient-name" class="col-form-label"> حافز (عدد الأيام) :</label>
                 <input type="text" class="form-control" id="recipient-name">
@@ -88,12 +85,17 @@ if (isset($_GET['id'])) {
                 <label for="recipient-name" class="col-form-label"> فروقات شهور سابقة:</label>
                 <input type="text" class="form-control" id="recipient-name">
               </div>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label"> اخر اضافي:</label>
+                <input type="text" class="form-control" id="recipient-name">
+              </div>
+              <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
+            <button type="submit" class="btn btn-primary mr-2">اضافة </button>
+          </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">اغلاق</button>
-            <button type="button" class="btn btn-primary mr-2">اضافة </button>
-          </div>
+          
         </div>
       </div>
     </div>
