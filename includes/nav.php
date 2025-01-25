@@ -21,8 +21,11 @@
             <a class="nav-link" href="masrofat.php">المصروفات</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="register.php">إنشاء حساب جديد</a>
+            <a class="nav-link" href="Combined_report.php">التقرير الشهري المجمع</a>
           </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" href="register.php">إنشاء حساب جديد</a>
+          </li> -->
         </ul>
       </div>
     </div>

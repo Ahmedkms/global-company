@@ -33,6 +33,7 @@ $sql = "
         SUM(CASE WHEN entitlement_name = 'حافز بعدد الايام' THEN amount ELSE 0 END) AS incentive_days,
         SUM(CASE WHEN entitlement_name = 'حافز بالقيمة' THEN amount ELSE 0 END) AS incentive_value,
         SUM(CASE WHEN entitlement_name = 'بدل انتقال' THEN amount ELSE 0 END) AS transport_allowance,
+        SUM(CASE WHEN entitlement_name = 'مأموريات' THEN amount ELSE 0 END) AS errands,
         SUM(CASE WHEN entitlement_name = 'فروقات شهور سابقة' THEN amount ELSE 0 END) AS previous_differences,
         SUM(CASE WHEN entitlement_name = 'اخر اضافي' THEN amount ELSE 0 END) AS other_extra,
         SUM(amount) AS total_entitlements
@@ -68,6 +69,7 @@ SELECT
     COALESCE(es.incentive_days, 0) AS incentive_days,
     COALESCE(es.incentive_value, 0) AS incentive_value,
     COALESCE(es.transport_allowance, 0) AS transport_allowance,
+    COALESCE(es.errands, 0) AS errands,
     COALESCE(es.previous_differences, 0) AS previous_differences,
     COALESCE(es.other_extra, 0) AS other_extra,
     COALESCE(ds.advance, 0) AS advance,
@@ -125,6 +127,7 @@ if (!$result) {
             <th>حافز بعدد الأيام</th>
             <th>حافز بالقيمة</th>
             <th>بدل انتقال</th>
+            <th> مأموريات</th>
             <th>فروقات شهور سابقة</th>
             <th>إضافي آخر</th>
             <th>سلف</th>
@@ -149,13 +152,13 @@ if (!$result) {
               $query = "
                   INSERT INTO saved_salaries (
                       employee_id, employee_name, site, base_salary, job, daily_reward, attendance_days, 
-                      overtime, overtime_30, incentive_days, incentive_value, transport_allowance, 
+                      overtime, overtime_30, incentive_days, incentive_value, transport_allowance,errands, 
                       previous_differences, other_extra, advance, insurance, leave_deduction, 
                       penalties, absence, total_entitlements, total_deductions, net_salary, month, year
                   ) VALUES (
                       $empid, '{$row['employee_name']}', '{$row['site']}', {$row['base_salary']}, '{$row['job']}', 
                       {$row['daily_reward']}, {$row['attendance_days']}, {$row['overtime']}, {$row['overtime_30']}, 
-                      {$row['incentive_days']}, {$row['incentive_value']}, {$row['transport_allowance']}, 
+                      {$row['incentive_days']}, {$row['incentive_value']}, {$row['transport_allowance']},{$row['errands']}, 
                       {$row['previous_differences']}, {$row['other_extra']}, {$row['advance']}, {$row['insurance']}, 
                       {$row['leave_deduction']}, {$row['penalties']}, {$row['absence']}, {$row['total_entitlements']}, 
                       {$row['total_deductions']}, $net_salary, $search_month, $search_year
@@ -172,6 +175,7 @@ if (!$result) {
                       incentive_days = VALUES(incentive_days),
                       incentive_value = VALUES(incentive_value),
                       transport_allowance = VALUES(transport_allowance),
+                      errands = VALUES(errands),
                       previous_differences = VALUES(previous_differences),
                       other_extra = VALUES(other_extra),
                       advance = VALUES(advance),
@@ -200,6 +204,7 @@ if (!$result) {
               echo "<td>{$row['incentive_days']}</td>";
               echo "<td>{$row['incentive_value']}</td>";
               echo "<td>{$row['transport_allowance']}</td>";
+              echo "<td>{$row['errands']}</td>";
               echo "<td>{$row['previous_differences']}</td>";
               echo "<td>{$row['other_extra']}</td>";
               echo "<td>{$row['advance']}</td>";
