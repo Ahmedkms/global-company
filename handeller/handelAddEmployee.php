@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $name = isset($_POST['name']) ? $_POST['name'] : '';
     $file = isset($_FILES['image']) ? $_FILES['image'] : null;
+    $base_salary = isset($_POST['base_salary']) ? $_POST['base_salary'] : '';
     // Validate name
     if (required($name)) {
         $errors['name'] = "Name is required.";
@@ -117,9 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         redirect("../add-employee.php");
     } else {
         // Create the SQL query
-        $sql = "INSERT INTO employees (name, image, date_of_birth, phone, address, criminal_record, job, daily_reward,
+        $sql = "INSERT INTO employees (name, image, date_of_birth, phone, address, criminal_record, job, daily_reward,base_salary,
             is_permanent, is_fixed_worker, site, start_date, end_date) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
 
         // Prepare the statement
@@ -132,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // Bind the parameters to the query
         $stmt->bind_param(
-            'sssssssdiisss',  // Match the 13 parameters with correct types
+            'sssssssddiisss',  // Match the 13 parameters with correct types
             $name,
             $destination,
             $dateOfBirth,
@@ -141,6 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $Criminal_record_destination,
             $job,
             $daily_reward,
+            $base_salary,
             $is_permanent,
             $is_fixed_worker,
             $site,
@@ -156,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if ($stmt->execute()) {
             $_SESSION['success'] = "Employee added successfully!";
            redirect("../employee.php");
-            
+       
         } else {
             $_SESSION['errors'] = ["Error occurred while adding the employee."];
             redirect("../add-employee.php");

@@ -42,6 +42,7 @@ include "data/connection.php";
           <th scope="col">اسم الموظف</th>
           <th scope="col">الوظيفة</th>
           <th scope="col">الموقع</th>
+          <!-- <th scope="col">الراتب</th> -->
           <th scope="col"> تعديل / حذف</th>
         </tr>
       </thead>
@@ -59,6 +60,8 @@ include "data/connection.php";
               echo "<td>" . $row['name'] . "</td>";
               echo "<td>" . $row['job'] . "</td>";
               echo "<td>" . $row['site'] . "</td>";
+              // echo "<td>" . $row['base_salary'] . "</td>";
+
               echo "<td>
                       <a href='updateEmployee.php?id=$empID' class='btn btn-warning'>تعديل</a>
                       <a href='employee/deleteEmployee.php?id=$empID' class='btn btn-danger'>حذف</a>

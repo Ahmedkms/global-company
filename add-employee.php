@@ -85,9 +85,16 @@ unset($_SESSION['old_input']);
 
   <div class="col-8 text-right col-auto">
     <label for="Salary" class="form-label">الاجر اليومي</label>
-    <input type="text" name="daily_reward" class="form-control" value="<?= htmlspecialchars($old_input['daily_reward'] ?? '') ?>">
+    <input type="number" name="daily_reward" class="form-control" value="<?= htmlspecialchars($old_input['daily_reward'] ?? '') ?>">
     <?php if (isset($errors['daily_reward'])): ?>
       <div class="error" style="color: red;"><?= $errors['daily_reward'] ?></div>
+    <?php endif; ?>
+  </div>
+  <div class="col-8 text-right col-auto">
+    <label for="Salary" class="form-label"> الراتب الشهرى</label>
+    <input type="number" name="base_salary" class="form-control" value="<?= htmlspecialchars($old_input['base_salary'] ?? '') ?>">
+    <?php if (isset($errors['base_salary'])): ?>
+      <div class="error" style="color: red;"><?= $errors['base_salary'] ?></div>
     <?php endif; ?>
   </div>
 
