@@ -7,8 +7,12 @@ include "data/connection.php";
 // الحصول على الشهر والسنة من المدخلات
 $search_month = isset($_GET['month']) ? $_GET['month'] : date('Y-m'); // الشهر الحالي إذا لم يتم إدخال شيء
 $search_month_parts = explode("-", $search_month);
-$search_year = $search_month_parts[0];
-$search_month = $search_month_parts[1];
+$search_year = intval($search_month_parts[0]);
+$search_month = intval($search_month_parts[1]);
+
+if (!is_numeric($search_month) || !is_numeric($search_year)) {
+    die("Invalid month or year input");
+}
 
 $sql = "
   WITH AttendanceCount AS (
@@ -17,9 +21,11 @@ $sql = "
         COUNT(*) AS attendance_days
     FROM attendance
     WHERE status = 'present'
+      AND MONTH(attendance_date) = $search_month
+      AND YEAR(attendance_date) = $search_year
     GROUP BY employee_id
-),
-EntitlementsSummary AS (
+  ),
+  EntitlementsSummary AS (
     SELECT 
         employee_id,
         SUM(CASE WHEN entitlement_name = 'ساعات اضافية' THEN amount ELSE 0 END) AS overtime,
@@ -31,9 +37,11 @@ EntitlementsSummary AS (
         SUM(CASE WHEN entitlement_name = 'اخر اضافي' THEN amount ELSE 0 END) AS other_extra,
         SUM(amount) AS total_entitlements
     FROM entitlements
+    WHERE MONTH(date) = $search_month
+      AND YEAR(date) = $search_year
     GROUP BY employee_id
-),
-DeductionsSummary AS (
+  ),
+  DeductionsSummary AS (
     SELECT 
         employee_id,
         SUM(CASE WHEN deduction_name = 'سلف' THEN amount ELSE 0 END) AS advance,
@@ -43,8 +51,10 @@ DeductionsSummary AS (
         SUM(CASE WHEN deduction_name = 'غياب' THEN amount ELSE 0 END) AS absence,
         SUM(amount) AS total_deductions
     FROM deductions
+    WHERE MONTH(date) = $search_month
+      AND YEAR(date) = $search_year
     GROUP BY employee_id
-)
+  )
 SELECT 
     e.id AS employee_id,
     e.name AS employee_name,
@@ -72,16 +82,17 @@ FROM employees e
 LEFT JOIN AttendanceCount ac ON e.id = ac.employee_id
 LEFT JOIN EntitlementsSummary es ON e.id = es.employee_id
 LEFT JOIN DeductionsSummary ds ON e.id = ds.employee_id;
-
 ";
 
 $result = $conn->query($sql);
-
+if (!$result) {
+    die("Query Error: " . $conn->error);
+}
 ?>
 
 <body>
   <div class="container-fluid">
-    <!-- start of tap section-->
+    <!-- شريط التبويبات -->
     <ul class="nav nav-tabs">
       <li class="nav-item">
         <a class="nav-link active" href="salary.php">المرتبات</a>
@@ -90,102 +101,124 @@ $result = $conn->query($sql);
         <a class="nav-link" href="attendance.php">الحضور اليومي</a>
       </li>
     </ul>
-    <!-- Search tap-->
+    <!-- البحث -->
     <form class="d-flex text-right mt-2" method="GET" action="salary.php">
       <label class="col-md-1">الشهر:</label>
       <input class="col-md-2 form-control me-2" type="month" name="month" value="<?= isset($_GET['month']) ? $_GET['month'] : date('Y-m'); ?>" required>
-      <button class="col-md-1 mr-1 btn btn-success" type="submit">انشاء تقرير</button>
+      <button class="col-md-1 mr-1 btn btn-success" type="submit">إنشاء تقرير</button>
     </form>
-    <!--mostakt3at table-->
+    <!-- الجدول -->
     <div class="table-responsive">
-      <table class=" table table-hover mt-3 text-right">
+      <table class="table table-hover mt-3 text-right">
         <thead>
           <tr>
-            <th scope="col">الكود</th>
-            <th scope="col">اسم الموظف</th>
-            <th scope="col">الموقع</th>
-            <th scope="col">الراتب الأساسي</th>
-            <th scope="col">الوظيفة</th>
-            <th scope="col">الراتب اليومي</th>
-            <th scope="col">عدد أيام الحضور</th>
-            <th scope="col">ساعات إضافية</th>
-            <th scope="col">ساعات إضافية على 30</th>
-            <th scope="col">حافز بعدد الأيام</th>
-            <th scope="col">حافز بالقيمة</th>
-            <th scope="col">بدل انتقال</th>
-            <th scope="col">فروقات شهور سابقة</th>
-            <th scope="col">إضافي آخر</th>
-            <th scope="col">سلف</th>
-            <th scope="col">التأمينات</th>
-            <th scope="col">الإجازات بالخصم</th>
-            <th scope="col">جزاءات</th>
-            <th scope="col">غياب</th>
-            <th scope="col">إجمالي الاستحقاقات</th>
-            <th scope="col">إجمالي الاستقطاعات</th>
-            <th scope="col">صافي الراتب</th>
+            <th>الكود</th>
+            <th>اسم الموظف</th>
+            <th>الموقع</th>
+            <th>الراتب الأساسي</th>
+            <th>الوظيفة</th>
+            <th>الراتب اليومي</th>
+            <th>عدد أيام الحضور</th>
+            <th>إجمالي الراتب</th>
+            <th>ساعات إضافية</th>
+            <th>ساعات إضافية على 30</th>
+            <th>حافز بعدد الأيام</th>
+            <th>حافز بالقيمة</th>
+            <th>بدل انتقال</th>
+            <th>فروقات شهور سابقة</th>
+            <th>إضافي آخر</th>
+            <th>سلف</th>
+            <th>التأمينات</th>
+            <th>الإجازات بالخصم</th>
+            <th>جزاءات</th>
+            <th>غياب</th>
+            <th>إجمالي الاستحقاقات</th>
+            <th>إجمالي الاستقطاعات</th>
+            <th>صافي الراتب</th>
+            <th>###</th>
           </tr>
         </thead>
-
         <tbody>
-  <?php
-  if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-      // تحويل القيم إلى أرقام إذا لم تكن موجودة
-      $attendance_days = (int)$row['attendance_days']; // تحويل إلى عدد صحيح
-      $overtime = (float)$row['overtime']; // تحويل إلى عدد عشري
-      $base_salary = (float)$row['base_salary']; // تحويل إلى عدد عشري
-      $overtime_30 = (float)$row['overtime_30'];
-      $incentive_days = (float)$row['incentive_days'];
-      $incentive_value = (float)$row['incentive_value'];
-      $transport_allowance = (float)$row['transport_allowance'];
-      $previous_differences = (float)$row['previous_differences'];
-      $other_extra = (float)$row['other_extra'];
-      $advance = (float)$row['advance'];
-      $insurance = (float)$row['insurance'];
-      $leave_deduction = (float)$row['leave_deduction'];
-      $penalties = (float)$row['penalties'];
-      $absence = (float)$row['absence'];
-      $total_entitlements = (float)$row['total_entitlements'];
-      $total_deductions = (float)$row['total_deductions'];
-      $net_salary = (float)$row['net_salary'];
+          <?php
+          while ($row = $result->fetch_assoc()) {
+              $totalSalary = ($row['attendance_days'] * $row['daily_reward']) + $row['base_salary'];
+              $net_salary = $row['net_salary'] + $totalSalary;
+              $empid = $row['employee_id'];
 
-      echo "<tr>";
-      echo "<td>" . $row['employee_id'] . "</td>";
-      echo "<td>" . $row['employee_name'] . "</td>";
-      echo "<td>" . $row['site'] . "</td>";
-      echo "<td>" .  $base_salary  . "</td>";
-      echo "<td>" . $row['job'] . "</td>";
-      echo "<td>" . $row['daily_reward'] . "</td>";
-      echo "<td>" . $attendance_days . "</td>";
-      echo "<td>" . $overtime . "</td>";
-      echo "<td>" . $overtime_30 . "</td>";
-      echo "<td>" . $incentive_days . "</td>";
-      echo "<td>" . $incentive_value . "</td>";
-      echo "<td>" . $transport_allowance . "</td>";
-      echo "<td>" . $previous_differences . "</td>";
-      echo "<td>" . $other_extra . "</td>";
-      echo "<td>" . $advance . "</td>";
-      echo "<td>" . $insurance . "</td>";
-      echo "<td>" . $leave_deduction . "</td>";
-      echo "<td>" . $penalties . "</td>";
-      echo "<td>" . $absence . "</td>";
-      echo "<td>" . $total_entitlements . "</td>";
-      echo "<td>" . $total_deductions . "</td>";
-      echo "<td>" . $net_salary . "</td>";
-      echo "</tr>";
-    }
-  } else {
-    echo "<tr><td colspan='20'>لا توجد بيانات</td></tr>";
-  }
-  ?>
-</tbody>
+              // إعداد استعلام الإدراج أو التحديث
+              $query = "
+                  INSERT INTO saved_salaries (
+                      employee_id, employee_name, site, base_salary, job, daily_reward, attendance_days, 
+                      overtime, overtime_30, incentive_days, incentive_value, transport_allowance, 
+                      previous_differences, other_extra, advance, insurance, leave_deduction, 
+                      penalties, absence, total_entitlements, total_deductions, net_salary, month, year
+                  ) VALUES (
+                      $empid, '{$row['employee_name']}', '{$row['site']}', {$row['base_salary']}, '{$row['job']}', 
+                      {$row['daily_reward']}, {$row['attendance_days']}, {$row['overtime']}, {$row['overtime_30']}, 
+                      {$row['incentive_days']}, {$row['incentive_value']}, {$row['transport_allowance']}, 
+                      {$row['previous_differences']}, {$row['other_extra']}, {$row['advance']}, {$row['insurance']}, 
+                      {$row['leave_deduction']}, {$row['penalties']}, {$row['absence']}, {$row['total_entitlements']}, 
+                      {$row['total_deductions']}, $net_salary, $search_month, $search_year
+                  )
+                  ON DUPLICATE KEY UPDATE 
+                      employee_name = VALUES(employee_name),
+                      site = VALUES(site),
+                      base_salary = VALUES(base_salary),
+                      job = VALUES(job),
+                      daily_reward = VALUES(daily_reward),
+                      attendance_days = VALUES(attendance_days),
+                      overtime = VALUES(overtime),
+                      overtime_30 = VALUES(overtime_30),
+                      incentive_days = VALUES(incentive_days),
+                      incentive_value = VALUES(incentive_value),
+                      transport_allowance = VALUES(transport_allowance),
+                      previous_differences = VALUES(previous_differences),
+                      other_extra = VALUES(other_extra),
+                      advance = VALUES(advance),
+                      insurance = VALUES(insurance),
+                      leave_deduction = VALUES(leave_deduction),
+                      penalties = VALUES(penalties),
+                      absence = VALUES(absence),
+                      total_entitlements = VALUES(total_entitlements),
+                      total_deductions = VALUES(total_deductions),
+                      net_salary = VALUES(net_salary)
+              ";
+              $conn->query($query);
 
+              // عرض الصفوف
+              echo "<tr>";
+              echo "<td>{$row['employee_id']}</td>";
+              echo "<td>{$row['employee_name']}</td>";
+              echo "<td>{$row['site']}</td>";
+              echo "<td>{$row['base_salary']}</td>";
+              echo "<td>{$row['job']}</td>";
+              echo "<td>{$row['daily_reward']}</td>";
+              echo "<td>{$row['attendance_days']}</td>";
+              echo "<td>$totalSalary</td>";
+              echo "<td>{$row['overtime']}</td>";
+              echo "<td>{$row['overtime_30']}</td>";
+              echo "<td>{$row['incentive_days']}</td>";
+              echo "<td>{$row['incentive_value']}</td>";
+              echo "<td>{$row['transport_allowance']}</td>";
+              echo "<td>{$row['previous_differences']}</td>";
+              echo "<td>{$row['other_extra']}</td>";
+              echo "<td>{$row['advance']}</td>";
+              echo "<td>{$row['insurance']}</td>";
+              echo "<td>{$row['leave_deduction']}</td>";
+              echo "<td>{$row['penalties']}</td>";
+              echo "<td>{$row['absence']}</td>";
+              echo "<td>{$row['total_entitlements']}</td>";
+              echo "<td>{$row['total_deductions']}</td>";
+              echo "<td>$net_salary</td>";
+              echo "<td>
+              <a href='entitlements.php?id=$empid' class='btn btn-success'>عرض</a>
+
+            </td>";
+              echo "</tr>";
+          }
+          ?>
+        </tbody>
       </table>
     </div>
   </div>
-  <script src="js/popper.min.js"></script>
-  <script src="js/jquery-3.7.1.js"></script>
-  <script src="js/bootstrap.js"></script>
 </body>
-
-</html>

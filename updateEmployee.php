@@ -21,6 +21,7 @@ if(isset($_GET['id'])){
     $Criminal_record_destination = $employee['criminal_record'];
     $job = $employee['job'];
     $daily_reward = $employee['daily_reward'];
+    $base_salary = $employee['base_salary'];
     $is_permanent = $employee['is_permanent'];  // Make sure this is fetched from the database
     $is_fixed_worker = $employee['is_fixed_worker'];  // Make sure this is fetched from the database
     $site = $employee['site'];
@@ -77,6 +78,10 @@ if(isset($_GET['id'])){
       <div class="col-8 text-right col-auto">
         <label for="Salary" class="form-label">الاجر اليومي</label>
         <input type="text" name="daily_reward" value="<?=$daily_reward?>" class="form-control" placeholder="Enter daily wage">
+      </div>
+      <div class="col-8 text-right col-auto">
+        <label for="Salary" class="form-label"> الراتب الشهري</label>
+        <input type="text" name="base_salary" value="<?=$base_salary?>" class="form-control" placeholder="Enter base salary">
       </div>
 
       <div class="form-check col-auto text-right mt-4">

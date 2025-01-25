@@ -30,7 +30,5 @@ if (isset($_GET["id"])) {
     // إغلاق الاتصال
     $stmt->close();
     $conn->close();
-
-    
 }
 ?>

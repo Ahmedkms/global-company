@@ -16,15 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     // Validate name
     if (required($name)) {
         $errors[] = "Name is required.";
-    } elseif (minimumchars($name, 3)) {
-        $errors[] = "Name must be more than 3 characters.";
-    } elseif (maximumchars($name, 70)) {
-        $errors[] = "Name cannot exceed 70 characters.";
-    }
+    } 
 
     // Validate date of birth
     if (required($dateOfBirth)) {
-        $errors[] = "Date of birth is required.";
+        // $errors[] = "Date of birth is required.";
     } else {
         $dobTimestamp = strtotime($dateOfBirth);
         $currentTimestamp = time();
@@ -35,16 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     }
 
     // Validate phone
-    if (required($phone)) {
-        $errors[] = "Phone is required.";
-    } elseif (!preg_match('/^01[0125][0-9]{8}$/', $phone)) {
-        $errors[] = "Invalid phone number. Must be 11 digits and start with 010, 011, 012, or 015.";
-    }
+    // if (required($phone)) {
+    //     $errors[] = "Phone is required.";
+    // } elseif (!preg_match('/^01[0125][0-9]{8}$/', $phone)) {
+    //     $errors[] = "Invalid phone number. Must be 11 digits and start with 010, 011, 012, or 015.";
+    // }
 
     // Validate address
-    if (required($address)) {
-        $errors[] = "Address is required.";
-    }
+    // if (required($address)) {
+    //     $errors[] = "Address is required.";
+    // }
 
     // Validate job
     if (required($job)) {
@@ -90,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                     address = ?, 
                     job = ?, 
                     daily_reward = ?, 
+                    base_salary = ?, 
                     is_permanent = ?, 
                     is_fixed_worker = ?, 
                     site = ?, 
@@ -107,13 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // Bind the parameters to the query
         $stmt->bind_param(
-            'sssssdiisssi',  // Match the 12 parameters with correct types: 's' for strings, 'i' for integers
+            'sssssddiisssi',  // Match the 12 parameters with correct types: 's' for strings, 'i' for integers
             $name,
             $dateOfBirth,
             $phone,
             $address,
             $job,
             $daily_reward,
+            $base_salary,
             $is_permanent,
             $is_fixed_worker,
             $site,

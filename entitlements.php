@@ -92,7 +92,7 @@ if (isset($_GET['id'])) {
               
               <div class="form-group">
                 <label for="entitlementValue" class="col-form-label">ملاحظات</label>
-                <input type="text" name="notes" id="entitlementValue" class="form-control" >
+                <input type="text" name="notes" id="entitlementValue" row="3" class="form-control" >
               </div>
 
               <div class="modal-footer">

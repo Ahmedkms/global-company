@@ -14,6 +14,7 @@ if(isset($_SERVER["REQUEST_METHOD"])=="POST"){
     $amount = $_POST["amount"] ?? '';
     $date = $_POST["date"] ?? '';
     $comment = $_POST["comment"] ?? '';
+    $site = $_POST["site"] ?? '';
 
     
     //validation of bandname
@@ -43,6 +44,10 @@ if(isset($_SERVER["REQUEST_METHOD"])=="POST"){
     if(empty($comment)){
         $comment = "لا يوجد ملاحظات";
     }
+    // if(required($site)){
+    //  $errors['site'] = "  ادخل اسم الموقع";
+
+    // }
 
 if(!empty($errors)){
     $_SESSION["errors"] = $errors;
@@ -50,8 +55,8 @@ if(!empty($errors)){
     $err = $_SESSION['errors'];
     redirect("../masrofat.php");
 }else{
-    $sql = "INSERT INTO masrofat (bandname, amount, date, comment) 
-            VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO masrofat (bandname, amount, date,site, comment) 
+            VALUES (?, ?, ?, ?,?)";
 
 
         // Prepare the statement
@@ -64,21 +69,33 @@ if(!empty($errors)){
 
         // Bind the parameters to the query
         $stmt->bind_param(
-            'sdss',  
+            'sdsss',  
           $bandname,
           $amount,
           $date,
+          $site,
           $comment
         );
+
+      
+
+
 
         // Execute the statement
         if ($stmt->execute()) {
             $_SESSION['success'] = "masrofat added successfully!";
-           redirect("../masrofat.php");
+            var_dump($bandname);
+            var_dump($amount);
+            var_dump($date);
+            var_dump($site);
+            exit;
+    
+           
+            // redirect("../masrofat.php");
             
         } else {
             $_SESSION['errors'] = ["Error occurred while adding the employee."];
-            redirect("../masrofat.php");
+            // redirect("../masrofat.php");
         }
       
         // Close the statement

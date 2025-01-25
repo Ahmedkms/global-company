@@ -91,7 +91,7 @@ if (isset($_GET['id'])) {
 
               <div class="form-group">
                 <label for="notes" class="col-form-label">ملاحظات:</label>
-                <textarea name="notes" id="notes" class="form-control" rows="3"></textarea>
+                <input type="text"  name="notes" id="notes" class="form-control" rows="3"></input>
               </div>
 
               <div class="modal-footer">
