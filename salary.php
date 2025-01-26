@@ -121,7 +121,6 @@ if (!$result) {
             <th>الوظيفة</th>
             <th>الراتب اليومي</th>
             <th>عدد أيام الحضور</th>
-            <th>إجمالي الراتب</th>
             <th>ساعات إضافية</th>
             <th>ساعات إضافية على 30</th>
             <th>حافز بعدد الأيام</th>
@@ -135,6 +134,7 @@ if (!$result) {
             <th>الإجازات بالخصم</th>
             <th>جزاءات</th>
             <th>غياب</th>
+            <th>إجمالي الراتب</th>
             <th>إجمالي الاستحقاقات</th>
             <th>إجمالي الاستقطاعات</th>
             <th>صافي الراتب</th>
@@ -198,7 +198,6 @@ if (!$result) {
               echo "<td>{$row['job']}</td>";
               echo "<td>{$row['daily_reward']}</td>";
               echo "<td>{$row['attendance_days']}</td>";
-              echo "<td>$totalSalary</td>";
               echo "<td>{$row['overtime']}</td>";
               echo "<td>{$row['overtime_30']}</td>";
               echo "<td>{$row['incentive_days']}</td>";
@@ -212,6 +211,7 @@ if (!$result) {
               echo "<td>{$row['leave_deduction']}</td>";
               echo "<td>{$row['penalties']}</td>";
               echo "<td>{$row['absence']}</td>";
+              echo "<td>$totalSalary</td>";
               echo "<td>{$row['total_entitlements']}</td>";
               echo "<td>{$row['total_deductions']}</td>";
               echo "<td>$net_salary</td>";
