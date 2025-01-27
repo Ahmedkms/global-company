@@ -72,11 +72,36 @@ unset($_SESSION['old_input']);
   <div class="col-12 text-right form-group">
     <label for="job" class="form-label">الوظيفة</label>
     <select name="job" class="form-control">
-      <option value="مشرف سقالات" <?= (isset($old_input['job']) && $old_input['job'] == 'مشرف سقالات') ? 'selected' : '' ?>>مشرف سقالات</option>
-      <option value="مهندس" <?= (isset($old_input['job']) && $old_input['job'] == 'مهندس') ? 'selected' : '' ?>>مهندس</option>
-      <option value="عامل" <?= (isset($old_input['job']) && $old_input['job'] == 'عامل') ? 'selected' : '' ?>>عامل</option>
+      <option value="ملاحظ سقالات" <?= (isset($old_input['job']) && $old_input['job'] == 'ملاحظ سقالات') ? 'selected' : '' ?>>ملاحظ سقالات</option>
+      <option value="مهندس مساحه" <?= (isset($old_input['job']) && $old_input['job'] == 'مهندس مساحة') ? 'selected' : '' ?>>مهندس مساحه</option>
+      <option value="مدير مالى وادارى" <?= (isset($old_input['job']) && $old_input['job'] == 'مدير مالى وادارى') ? 'selected' : '' ?>>مدير مالى وادارى</option>
       <option value="محاسب" <?= (isset($old_input['job']) && $old_input['job'] == 'محاسب') ? 'selected' : '' ?>>محاسب</option>
       <option value="مدير موقع" <?= (isset($old_input['job']) && $old_input['job'] == 'مدير موقع') ? 'selected' : '' ?>>مدير موقع</option>
+      <option value="إداري" <?= (isset($old_input['job']) && $old_input['job'] == 'إداري') ? 'selected' : '' ?>>إداري</option>
+      <option value="امن صناعي" <?= (isset($old_input['job']) && $old_input['job'] == 'امن صناعي') ? 'selected' : '' ?>>امن صناعي</option>
+      <option value="أخصائي سلامة وصحة مهنية" <?= (isset($old_input['job']) && $old_input['job'] == 'أخصائي سلامة وصحة مهنية') ? 'selected' : '' ?>>أخصائي سلامة وصحة مهنية</option>
+      <option value="مهندس" <?= (isset($old_input['job']) && $old_input['job'] == 'مهندس') ? 'selected' : '' ?>>مهندس</option>
+      <option value="فني" <?= (isset($old_input['job']) && $old_input['job'] == 'فني') ? 'selected' : '' ?>>فني</option>
+      <option value="مساعد" <?= (isset($old_input['job']) && $old_input['job'] == 'مساعد') ? 'selected' : '' ?>>مساعد</option>
+      <option value="غفير" <?= (isset($old_input['job']) && $old_input['job'] == 'غفير') ? 'selected' : '' ?>>غفير</option>
+      <option value="سائق" <?= (isset($old_input['job']) && $old_input['job'] == 'سائق') ? 'selected' : '' ?>>سائق</option>
+      <option value="أمين مخزن" <?= (isset($old_input['job']) && $old_input['job'] == 'أمين مخزن') ? 'selected' : '' ?>>أمين مخزن</option>
+      <option value="عتال" <?= (isset($old_input['job']) && $old_input['job'] == 'عتال') ? 'selected' : '' ?>>عتال</option>
+      <option value="لحام" <?= (isset($old_input['job']) && $old_input['job'] == 'لحام') ? 'selected' : '' ?>>لحام</option>
+
+
+
+
+
+      
+
+
+
+
+
+
+      
+
     </select>
     <?php if (isset($errors['job'])): ?>
       <div class="error" style="color: red;"><?= $errors['job'] ?></div>
@@ -111,12 +136,13 @@ unset($_SESSION['old_input']);
   <div class="col-12 text-right form-group">
     <label for="site" class="form-label">الموقع</label>
     <select id="site" name="site" class="form-control">
-      <option value="titan" <?= (isset($old_input['site']) && $old_input['site'] == 'titan') ? 'selected' : '' ?>>titan</option>
-      <option value="amryah" <?= (isset($old_input['site']) && $old_input['site'] == 'amryah') ? 'selected' : '' ?>>ammreah</option>
-      <option value="site2" <?= (isset($old_input['site']) && $old_input['site'] == 'site2') ? 'selected' : '' ?>>الموقع2</option>
-      <option value="site3" <?= (isset($old_input['site']) && $old_input['site'] == 'site3') ? 'selected' : '' ?>>الموقع3</option>
-      <option value="site4" <?= (isset($old_input['site']) && $old_input['site'] == 'site4') ? 'selected' : '' ?>>الموقع4</option>
-      <option value="site5" <?= (isset($old_input['site']) && $old_input['site'] == 'site5') ? 'selected' : '' ?>>الموقع5</option>
+    <option value="تيتان بنى سويف" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'تيتان بنى سويف') ? 'selected' : '' ?>>تيتان بنى سويف</option>
+      <option value="بورسعيد" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'بورسعيد') ? 'selected' : '' ?>>بورسعيد</option>
+      <option value="العامرية" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'العامرية') ? 'selected' : '' ?>>العامرية</option>
+      <option value="الماكس" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'الماكس') ? 'selected' : '' ?>>الماكس</option>
+      <option value="المخذن" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'المخذن') ? 'selected' : '' ?>>المخذن</option>
+      <option value="خدمات الشركة" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'خدمات الشركة') ? 'selected' : '' ?>>خدمات الشركة</option>
+      <option value="الادارة" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'الادارة') ? 'selected' : '' ?>>الادارة</option>
     </select>
     <?php if (isset($errors['site'])): ?>
       <div class="error" style="color: red;"><?= $errors['site'] ?></div>

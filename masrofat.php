@@ -59,12 +59,13 @@ $search_month = $search_month_parts[1];
         </div>
         <div class="col-md-2">
           <select name="site" id="site" class="form-control">
-      <option value="titan" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'titan') ? 'selected' : '' ?>>titan</option>
-      <option value="amryah" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'amryah') ? 'selected' : '' ?>>ammreah</option>
-      <option value="site2" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'site2') ? 'selected' : '' ?>>الموقع2</option>
-      <option value="site3" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'site3') ? 'selected' : '' ?>>الموقع3</option>
-      <option value="site4" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'site4') ? 'selected' : '' ?>>الموقع4</option>
-      <option value="site5" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'site5') ? 'selected' : '' ?>>الموقع5</option>
+      <option value="تيتان بنى سويف" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'تيتان بنى سويف') ? 'selected' : '' ?>>تيتان بنى سويف</option>
+      <option value="بورسعيد" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'بورسعيد') ? 'selected' : '' ?>>بورسعيد</option>
+      <option value="العامرية" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'العامرية') ? 'selected' : '' ?>>العامرية</option>
+      <option value="الماكس" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'الماكس') ? 'selected' : '' ?>>الماكس</option>
+      <option value="المخذن" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'المخذن') ? 'selected' : '' ?>>المخذن</option>
+      <option value="خدمات الشركة" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'خدمات الشركة') ? 'selected' : '' ?>>خدمات الشركة</option>
+      <option value="الادارة" <?= (isset($_SESSION['site']) && $_SESSION['site'] == 'الادارة') ? 'selected' : '' ?>>الادارة</option>
           </select>
         </div>
 
